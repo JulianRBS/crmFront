@@ -1,0 +1,122 @@
+
+
+<div class="container">
+  <div class="row">
+
+    <div class="col-md-12">
+
+      <div class="tarjeta" *ngIf="verFormCampain">
+
+          <div class="form-group">
+            <label for="">Nombre de Campaña</label>
+            <input type="text" class="form-control" #campain>
+          </div>
+
+          <div class="form-group">
+            <button class="btn btn-primary" (click)="guardarNombre(campain.value)">Continuar</button>
+          </div>
+
+
+      </div>
+      <div class="tarjeta" *ngIf="nombreCampain">
+
+        <div class="row">
+          <div class="col-md-4">
+            <h3>{{nombreCampain}}</h3>
+            <div>Nombre de campaña</div>
+          </div>
+
+          <div class="col-md-4">
+            <div>
+              Elegir Delimitador
+              <select name="" id="" class="form-control" (change)="elegirDelimitador($event.target.value)">
+                <option value="">Por Defecto</option>
+                <option *ngFor="let item of configDelimit" value="{{item}}">{{item}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <label *ngIf="!archivo" for="file" class="carga">Cargar Archivo</label>
+            <input *ngIf="!archivo" id="file" type="file" name="files" class="botonCarga"
+                   #uploads  (change)="onChange(uploads.files)" multiple
+                   value="process"/>
+
+            <div><button *ngIf="archivo" class="btn btn-danger" (click)="eliminarArchivo()">Eliminar archivo seleccionado</button></div>
+            <div> <button *ngIf="archivo" class="btn btn-warning" (click)="elegirOtroArchivo()">Añadir otro archivo</button></div>
+
+          </div>
+        </div>
+
+
+
+        <div class="cargado alert alert-success" *ngIf="archivo">
+        <div><strong>Archivo cargado</strong> {{archivo.name}}</div>
+        </div>
+
+        <div class="row opciones" *ngIf="archivo">
+
+          <div class="table-responsive">
+            <table class="table">
+              <tr>
+                <th>Nombre de la columna</th>
+                <th>Asignar al campo</th>
+                <th>Cargar este campo?</th>
+              </tr>
+
+              <tr *ngFor="let item of headers">
+              <td>{{item}}</td>
+                <td> <select name={{item}} id="" class="form-control" (change)="eventoSelect($event.target)">
+                  <optgroup label="Seleccione campo a cargar"></optgroup>
+                  <option value="nombres">nombres</option>
+                  <option value="apellidos">apellidos</option>
+                  <option value="telefono">telefono</option>
+                  <option value="direccion">direccion</option>
+                </select></td>
+              <td> <input type="checkbox" class="form-control" name="columnas" value="{{item}}" (change)="valor($event)">
+              </td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="col-md-12">
+            <button class="btn btn-primary" (click)="cargarSeleccion()" *ngIf="listaSeleccionada.length>0">Añadir a Lista</button>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="tarjeta" *ngIf="arrayFinal.length>0">
+    <h5>Datos para importar </h5>
+  <table class="table" >
+    <tr>
+      <td>Nombres</td>
+      <td>Apellidos</td>
+      <td>Telefono</td>
+      <td>Dirección</td>
+    </tr>
+    <tr *ngFor="let item of arrayFinal">
+      <td>{{item.nombres}}</td>
+      <td>{{item.apellidos}}</td>
+      <td>{{item.telefono}}</td>
+      <td>{{item.direccion}}</td>
+    </tr>
+  </table>
+
+    <button class="btn btn-primary" (click)="guardarDatos()">Cargar Datos</button>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+

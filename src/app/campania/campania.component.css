@@ -1,0 +1,47 @@
+.tarjeta{
+  margin: 20px;
+  border-radius: 25px;
+  border: 1px solid lightgray;
+  padding: 30px;
+
+  transition: 0.5s all ease;
+
+}
+
+.tarjeta:hover{
+  border:1px solid darkgray;
+
+}
+
+.opciones{
+  margin-top: 24px;
+}
+
+.botonCarga{
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.carga{
+
+  background-color: #f33;
+  color: white;
+  padding: 15px;
+  cursor: pointer;
+  transition: 0.5s all ease;
+}
+carga:focus{
+  background-color: #ff4d2d;
+}
+
+.cargado{
+  border: 1px solid lightgray;
+  border-radius: 25px;
+  margin-top: 15px;
+  padding: 15px;
+
+}
