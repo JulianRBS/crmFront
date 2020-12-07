@@ -9,6 +9,12 @@ import {ApiService} from "../services/api.service";
 import {HttpClientModule} from "@angular/common/http";
 import {UrlService} from "../services/url.service";
 import { ContactoComponent } from './contacto/contacto.component';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {TableModule} from "primeng/table";
+import {ReactiveFormsModule} from "@angular/forms";
+import {TooltipModule} from "primeng/tooltip";
+import {ToastModule} from "primeng/toast";
+import {MessageService} from "primeng/api";
 
 @NgModule({
   declarations: [
@@ -20,7 +26,13 @@ import { ContactoComponent } from './contacto/contacto.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    TableModule,
+    ReactiveFormsModule,
+    TooltipModule,
+
+
   ],
   providers: [ApiService,UrlService],
   bootstrap: [AppComponent]

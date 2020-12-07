@@ -7,15 +7,16 @@
 
       <div class="tarjeta" *ngIf="verFormCampain">
 
+        <form [formGroup]="formCampain">
           <div class="form-group">
             <label for="">Nombre de Campaña</label>
-            <input type="text" class="form-control" #campain>
+            <input type="text" class="form-control" formControlName="nombreCampain">
           </div>
 
           <div class="form-group">
-            <button class="btn btn-primary" (click)="guardarNombre(campain.value)">Continuar</button>
+            <button class="btn btn-primary" [disabled]="!formCampain.valid" (click)="guardarNombre()">Continuar</button>
           </div>
-
+        </form>
 
       </div>
       <div class="tarjeta" *ngIf="nombreCampain">
@@ -42,8 +43,7 @@
                    #uploads  (change)="onChange(uploads.files)" multiple
                    value="process"/>
 
-            <div><button *ngIf="archivo" class="btn btn-danger" (click)="eliminarArchivo()">Eliminar archivo seleccionado</button></div>
-            <div> <button *ngIf="archivo" class="btn btn-warning" (click)="elegirOtroArchivo()">Añadir otro archivo</button></div>
+
 
           </div>
         </div>
@@ -51,9 +51,14 @@
 
 
         <div class="cargado alert alert-success" *ngIf="archivo">
-        <div><strong>Archivo cargado</strong> {{archivo.name}}</div>
+          <div class="row">
+        <div class="col-md-6"><strong>Archivo cargado</strong> {{archivo.name}}</div>
+          <div class="col-md-6">
+            <button pTooltip="Eliminar Archivo" class="btn btn-danger" (click)="eliminarArchivo()"><i class="pi pi-trash"></i></button>
+            <button pTooltip="Cambiar Archivo" class="btn btn-warning" (click)="elegirOtroArchivo()"><i class="pi pi-file"></i></button>
+          </div>
         </div>
-
+        </div>
         <div class="row opciones" *ngIf="archivo">
 
           <div class="table-responsive">
@@ -93,20 +98,28 @@
 
   <div class="tarjeta" *ngIf="arrayFinal.length>0">
     <h5>Datos para importar </h5>
-  <table class="table" >
-    <tr>
-      <td>Nombres</td>
-      <td>Apellidos</td>
-      <td>Telefono</td>
-      <td>Dirección</td>
-    </tr>
-    <tr *ngFor="let item of arrayFinal">
-      <td>{{item.nombres}}</td>
-      <td>{{item.apellidos}}</td>
-      <td>{{item.telefono}}</td>
-      <td>{{item.direccion}}</td>
-    </tr>
-  </table>
+    <p-table [value]="arrayFinal" [paginator]="true" [rows]="10"
+             currentPageReportTemplate="Mostrar {first} a {last} de {totalRecords} clientes" [rowsPerPageOptions]="[10,25,50]">
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Nombres</th>
+          <th>Apellidos</th>
+          <th>Teléfono</th>
+          <th>Dirección</th>
+
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-item>
+        <tr>
+          <td>{{item.nombres}}</td>
+          <td>{{item.apellidos}}</td>
+          <td>{{item.telefono}}</td>
+          <td>{{item.direccion}}</td>
+
+        </tr>
+      </ng-template>
+    </p-table>
 
     <button class="btn btn-primary" (click)="guardarDatos()">Cargar Datos</button>
   </div>

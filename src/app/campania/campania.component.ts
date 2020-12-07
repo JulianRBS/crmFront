@@ -2,6 +2,8 @@ import { Component, OnInit,ViewChild, ElementRef } from '@angular/core';
 import * as Papa from 'papaparse';
 import {ApiService} from "../../services/api.service";
 import {Router} from "@angular/router";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {MessageService} from "primeng/api";
 @Component({
   selector: 'app-campania',
   templateUrl: './campania.component.html',
@@ -9,6 +11,7 @@ import {Router} from "@angular/router";
 })
 export class CampaniaComponent implements OnInit {
   dataList : any[];
+  formCampain:FormGroup
   headers;
   archivo;
   listaSeleccionada=[];
@@ -17,9 +20,16 @@ export class CampaniaComponent implements OnInit {
   nombreCampain;
   delimitador="";
   configDelimit=[',',';','%'];
-  constructor(public api:ApiService,public router:Router) { }
+  constructor(public api:ApiService,public router:Router,public fb:FormBuilder) { }
 
   ngOnInit(): void {
+    this.ctrlFormCampain();
+  }
+
+  ctrlFormCampain(){
+    this.formCampain=this.fb.group({
+      nombreCampain:['',Validators.required]
+    })
   }
 
   onChange(files: File[]){
@@ -31,7 +41,6 @@ export class CampaniaComponent implements OnInit {
         delimiter:this.delimitador,
         complete: (result,file) => {
           this.headers=result.meta.fields;
-          console.log("ENCABEZADOS",this.headers)
 
         }
       });
@@ -70,7 +79,7 @@ export class CampaniaComponent implements OnInit {
         }
       }
     }
-    console.log(this.listaSeleccionada)
+
 
   }
 
@@ -104,9 +113,8 @@ export class CampaniaComponent implements OnInit {
   }
 
 
-
-  guardarNombre(nombre){
-    this.nombreCampain=nombre;
+  guardarNombre(){
+    this.nombreCampain=this.formCampain.value['nombreCampain'];
     this.verFormCampain=false;
   }
 
@@ -141,14 +149,14 @@ export class CampaniaComponent implements OnInit {
         alert(rt)
         this.router.navigate(['/contacto'])
       },error=>{
-        console.log(error)
+          console.log(error)
       }
     )
   }
 
   elegirDelimitador(valor){
     this.delimitador=valor
-    console.log(this.delimitador)
+
   }
 
 }
