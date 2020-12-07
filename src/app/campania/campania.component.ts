@@ -16,20 +16,55 @@ export class CampaniaComponent implements OnInit {
   archivo;
   listaSeleccionada=[];
   arrayFinal=[]
-  verFormCampain=true;
+  verFormCampain=false;
   nombreCampain;
   delimitador="";
   configDelimit=[',',';','%'];
+  campainsList=[];
+  verBtnNuevo=true;
+
   constructor(public api:ApiService,public router:Router,public fb:FormBuilder) { }
 
   ngOnInit(): void {
     this.ctrlFormCampain();
+    this.loadCampains()
+  }
+
+  loadCampains(){
+    this.api.get('campains').subscribe(
+      rt=>{
+        this.campainsList=rt;
+        console.log(this.campainsList)
+      }
+    )
+  }
+  cancelar(){
+    this.verFormCampain=false;
+    this.verBtnNuevo=true;
+  }
+
+
+  activarCampain(){
+    this.verFormCampain=true;
+    this.verBtnNuevo=false;
   }
 
   ctrlFormCampain(){
     this.formCampain=this.fb.group({
-      nombreCampain:['',Validators.required]
+      fecha:['',Validators.required],
+      nombreCampain:['',Validators.required],
+      codigo:['']
     })
+  }
+
+  generarUuid(length) {
+    var result = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
   }
 
   onChange(files: File[]){
@@ -142,14 +177,25 @@ export class CampaniaComponent implements OnInit {
   guardarDatos(){
     let obj={}
     obj['clientes']=this.arrayFinal
-    obj['campain']=this.nombreCampain
+    obj['nombre']=this.nombreCampain
+    obj['codigo']=this.generarUuid(5)
+    obj['fecha']=this.formCampain.value['fecha']
     console.log(obj)
     this.api.post('clientes',obj).subscribe(
       rt=>{
         alert(rt)
-        this.router.navigate(['/contacto'])
+
       },error=>{
           console.log(error)
+      }
+    )
+
+    this.api.post('campains',obj).subscribe(
+      rt=>{
+        alert(rt)
+        this.router.navigate(['/contacto'])
+      },error=>{
+        console.log(error)
       }
     )
   }
